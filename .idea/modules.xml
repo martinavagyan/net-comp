@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/net-comp.iml" filepath="$PROJECT_DIR$/net-comp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dist.iml" filepath="$PROJECT_DIR$/dist.iml" />
     </modules>
   </component>
 </project>
