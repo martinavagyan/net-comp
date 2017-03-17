@@ -1,16 +1,15 @@
 import java.util.ArrayList;
+import static spark.Spark.*;
 
 public class Node {
-    ArrayList peers = new ArrayList();
 
     public Node() {
 
-        try {
-            RmiClient client = new RmiClient();
-            RmiServer server = new RmiServer();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    }
 
+    public static void main(String[] args)
+    {
+
+        get("/hello", (req, res) -> "Hello World!");
     }
 }
