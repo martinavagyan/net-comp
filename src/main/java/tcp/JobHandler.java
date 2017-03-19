@@ -5,25 +5,27 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class AnswerHandler implements Runnable {
-    private NodeAnswer na;
+public class JobHandler implements Runnable{
+    private NodeJob nj;
 
-    public AnswerHandler(NodeAnswer na) {
-        this.na = na;
+    public JobHandler(NodeJob nj, NodeConnector nc) {
+        this.nj = nj;
+        this.nj.pushTraceStack(nc); // add current node to traceStack
     }
 
     @Override
-    public void run() { // obviously needs refactoring
+    public void run() {
         try {
-            NodeConnector nc = na.popNodeConnector(); // get next node from the trac
+            NodeConnector nc = nj.popBackTraceStack();
             Socket s = new Socket(nc.getIp(), nc.getPort());
             ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-            out.writeObject(na);
+            out.writeObject(nj);
             out.flush();
             out.close();
             s.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }

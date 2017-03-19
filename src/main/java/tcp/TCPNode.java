@@ -36,19 +36,19 @@ public class TCPNode implements Runnable {
             if (obj instanceof NodeRequest) {
                 NodeRequest nr = (NodeRequest) obj;
                 if (tm.available()) { // if task manager is available, accept
-                    NodeAccept na = new NodeAccept(nr, getNodeConnector());
-                    AcceptHandler arh = new AcceptHandler(na);
+                    NodeAccept na = new NodeAccept(nr);
+                    AcceptHandler arh = new AcceptHandler(getNodeConnector(), na);
                     (new Thread(arh)).start(); // send back the accept request
                 } else {
                     int randomNode = ThreadLocalRandom.current().nextInt(0, connectionList.size());
-                    NodeConnector nc = connectionList.get(randomNode);
-                    RequestHandler rh = new RequestHandler(nc, nr);
+                    NodeConnector nc = connectionList.get(randomNode); // take random for now
+                    RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
                     (new Thread(rh)).start();
                 }
             }
             if (obj instanceof NodeAccept) { // propagate the accept further
                 NodeAccept na = (NodeAccept) obj;
-                AcceptHandler ah = new AcceptHandler(na);
+                AcceptHandler ah = new AcceptHandler(getNodeConnector(), na);
                 (new Thread(ah)).start(); // send back the accept request
             }
             if (obj instanceof NodeJob) {
@@ -56,7 +56,7 @@ public class TCPNode implements Runnable {
                 if (nj.validate(getNodeConnector())) { // job is for us
                     tm.addNodeJob(nj); // send back NodeAnswer when job is finished
                 } else {
-                    JobHandler jh = new JobHandler(nj);
+                    JobHandler jh = new JobHandler(nj, getNodeConnector());
                     (new Thread(jh)).start();
                 }
             }

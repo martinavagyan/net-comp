@@ -5,20 +5,20 @@ import java.util.Stack;
 
 
 public class NodeRequest implements Serializable{
+    private long jobID;
     private Stack<NodeConnector> traceStack;
 
 
-    public NodeRequest (NodeConnector nc) {
+    public NodeRequest () {
         traceStack = new Stack<>();
-        traceStack.push(nc); // origin of request.
     }
 
-    public void pushNodeConnector(NodeConnector nc) {
+    public void pushTraceStack(NodeConnector nc) {
         traceStack.push(nc);
     }
 
     public Stack<NodeConnector> getTraceStack() {
-        return traceStack;
+        return (Stack<NodeConnector>)traceStack.clone();
     }
 
 }

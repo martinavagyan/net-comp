@@ -5,24 +5,21 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class RequestHandler implements Runnable{
-    private NodeConnector nc;
-    private NodeRequest nr;
+public class AcceptHandler implements Runnable{
+    private NodeAccept na;
 
-
-    public RequestHandler(NodeConnector nc, NodeRequest nr) {
-        this.nc = nc;
-        this.nr = nr;
+    public AcceptHandler(NodeConnector nc, NodeAccept na) {
+        this.na = na;
+        this.na.pushTraceStack(nc); // add current NodeConnector to the traceStack
     }
 
     @Override
     public void run() {
         try {
+            NodeConnector nc = na.popBackTraceStack(); // get next node from the back trace
             Socket s = new Socket(nc.getIp(), nc.getPort());
             ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-            nr.pushNodeConnector(nc); // add next node to the trace stack of the request
-
-            out.writeObject(nr);
+            out.writeObject(na);
             out.flush();
             out.close();
             s.close();
