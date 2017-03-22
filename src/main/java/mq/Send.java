@@ -7,6 +7,7 @@ import com.rabbitmq.client.Channel;
 public class Send {
 
     private final static String QUEUE_NAME = "netcomp";
+    private final static Boolean DURABLE = false;
 
     public Send() {
         try {
@@ -15,7 +16,7 @@ public class Send {
 
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            channel.queueDeclare(QUEUE_NAME, DURABLE, false, false, null);
 
             String msg = "Hello net-comp world!";
             channel.basicPublish("", QUEUE_NAME, null, msg.getBytes());

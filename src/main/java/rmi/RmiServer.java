@@ -1,3 +1,5 @@
+package rmi;
+
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -26,12 +28,12 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerIntf {
             System.out.println("java RMI registry already exists.");
         }
 
-        //Instantiate RmiServer
+        //Instantiate rmi.RmiServer
 
         server = new RmiServer();
 
-        // Bind this object instance to the name "RmiServer"
-        Naming.rebind("//localhost/RmiServer", server);
+        // Bind this object instance to the name "rmi.RmiServer"
+        Naming.rebind("//localhost/rmi.RmiServer", server);
         System.out.println("PeerServer bound in registry");
     }
 

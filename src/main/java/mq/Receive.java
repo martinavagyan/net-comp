@@ -8,6 +8,7 @@ import java.io.IOException;
  */
 public class Receive {
     private final static String QUEUE_NAME = "netcomp";
+    private final static Boolean DURABLE = false;
 
     public Receive() {
         try {
@@ -16,7 +17,7 @@ public class Receive {
 
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            channel.queueDeclare(QUEUE_NAME, DURABLE, false, false, null);
 
             System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
