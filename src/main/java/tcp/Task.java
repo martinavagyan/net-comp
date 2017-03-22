@@ -7,10 +7,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Task {
-    private ArrayList<Integer> contentList;
+    private long id;
     private int size;
+    private ArrayList<Integer> contentList;
 
-    public Task (int size) {
+    public Task (int size, long id) {
+        this.id = id;
         this.size = size;
         this.contentList = new ArrayList<>(this.size);
         populate();
