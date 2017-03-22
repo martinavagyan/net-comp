@@ -7,8 +7,10 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class AccessNode implements Runnable{ // Refactor with TCPNode
+    private Hashtable<Long, TaskAssigner> taskTable;
     private ArrayList<NodeConnector> connectionList;
     private ServerSocket ssocket;
 
@@ -19,6 +21,7 @@ public class AccessNode implements Runnable{ // Refactor with TCPNode
             e.printStackTrace();
         }
         connectionList = new ArrayList<>();
+        taskTable = new Hashtable<>();
     }
 
     @Override
@@ -30,28 +33,27 @@ public class AccessNode implements Runnable{ // Refactor with TCPNode
             Object obj = in.readObject();
 
             if (obj instanceof NodeAnswer) {
-                // A hash table that stores tasks based on jobID,
-                // when a new NodeAnswer comes in, we look in the hash table at the appropriate jobID and replace the
-                // NodeAnswer there if this one has a smaller delay
-                // the  object in the HashTable that stores the task and the best NodeAnswer, notifies the AccessNode
-                // when it is satisfied with a specific NodeAnswer - for example after it has received a specific amount
-                // of them.
+                NodeAnswer na = (NodeAnswer)obj;
+                Long jobID = na.getJobID();
+                TaskAssigner ta = taskTable.get(jobID);
+                ta.addNodeAnswer(na);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     public void addNewTask(int size, long jobID) {
-        Task task = new Task(size);
-        // add it to hash table at the jobID key
+        TaskAssigner ta = new TaskAssigner(new Task(size));
+        taskTable.put(jobID, ta);
     }
 
-    private void sendNodeJob(long jobID) {
-        // extract the task from the hash table, built the NodeJob and send it using a JobHandler
+    private void sendNodeJob(long jobID) { // method must be called by TaskAssigner thus -> eventlistener needed
+        TaskAssigner ta = taskTable.remove(jobID);
+        NodeJob nj = new NodeJob(ta.getTask(), ta.getBestNodeAnswer(), jobID);
+        JobHandler jh = new JobHandler(nj);
+        (new Thread(jh)).start();
     }
 }
