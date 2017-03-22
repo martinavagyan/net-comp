@@ -5,15 +5,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class TaskManager implements Runnable{
     private ArrayBlockingQueue<NodeJob> nodeJobQueue;
-    private NodeConnector nc; // own node connector
+    private NodeConnector nc; // own node connector, used for identification when logging
 
     public TaskManager (NodeConnector nc) {
         this.nc = nc;
-        nodeJobQueue = new ArrayBlockingQueue<NodeJob>(10); // hard-coded capacity
-    }
-
-    public boolean available() { // later change to check whether maximum concurrent processes is reached
-        return nodeJobQueue.remainingCapacity() > 0;
+        nodeJobQueue = new ArrayBlockingQueue<>(10); // hard-coded capacity
     }
 
     public synchronized boolean addNodeJob(NodeJob nj) {
@@ -21,13 +17,19 @@ public class TaskManager implements Runnable{
     }
 
     private NodeJob retrieveJob() {
-
+        return nodeJobQueue.poll();
     }
 
     @Override
     public void run() {
         while (true) {
-
+            NodeJob nj = retrieveJob();
+            nj.getTask().execute();
+            // update webservice that job is done
         }
+    }
+
+    public long getDelay() {
+        return nodeJobQueue.size()*100; // hard-coded for now
     }
 }

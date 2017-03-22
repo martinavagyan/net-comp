@@ -5,17 +5,18 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class AnswerHandler implements Runnable {
+public class AnswerHandler implements Runnable{
     private NodeAnswer na;
 
-    public AnswerHandler(NodeAnswer na) {
-        this.na = na;
+    public AnswerHandler(NodeConnector nc, NodeAnswer n) {
+        this.na = n;
+        this.na.pushTraceStack(nc); // add current NodeConnector to the traceStack
     }
 
     @Override
-    public void run() { // obviously needs refactoring
+    public void run() {
         try {
-            NodeConnector nc = na.popBackTraceStack(); // get next node from the trac
+            NodeConnector nc = na.popBackTraceStack(); // get next node from the back trace
             Socket s = new Socket(nc.getIp(), nc.getPort());
             ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
             out.writeObject(na);

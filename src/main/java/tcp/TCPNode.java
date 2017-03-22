@@ -20,8 +20,9 @@ public class TCPNode implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        tm = new TaskManager();
+        tm = new TaskManager(getNodeConnector());
         (new Thread(tm)).start();
+
         connectionList = new ArrayList<>();
     }
 
@@ -35,35 +36,28 @@ public class TCPNode implements Runnable {
 
             if (obj instanceof NodeRequest) {
                 NodeRequest nr = (NodeRequest) obj;
-                if (tm.available()) { // if task manager is available, accept
-                    NodeAccept na = new NodeAccept(nr);
-                    AcceptHandler arh = new AcceptHandler(getNodeConnector(), na);
-                    (new Thread(arh)).start(); // send back the accept request
-                } else {
-                    int randomNode = ThreadLocalRandom.current().nextInt(0, connectionList.size());
-                    NodeConnector nc = connectionList.get(randomNode); // take random for now
+
+                NodeAnswer na = new NodeAnswer(nr, tm.getDelay());
+                AnswerHandler ah = new AnswerHandler(getNodeConnector(), na);
+                (new Thread(ah)).start(); // send back the node answer to request (i.e. the delay)
+
+                for (NodeConnector nc : connectionList) {
+                    // CHECK that nc is not in nr trace Stack!!!!!!!!!!!!!!!!!!!
                     RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
                     (new Thread(rh)).start();
                 }
-            }
-            if (obj instanceof NodeAccept) { // propagate the accept further
-                NodeAccept na = (NodeAccept) obj;
-                AcceptHandler ah = new AcceptHandler(getNodeConnector(), na);
-                (new Thread(ah)).start(); // send back the accept request
-            }
-            if (obj instanceof NodeJob) {
+            } else if (obj instanceof NodeAnswer) { // propagate the answer further
+                NodeAnswer na = (NodeAnswer) obj;
+                AnswerHandler ah = new AnswerHandler(getNodeConnector(), na);
+                (new Thread(ah)).start(); // send the answer further
+            } else if (obj instanceof NodeJob) {
                 NodeJob nj = (NodeJob) obj;
                 if (nj.validate(getNodeConnector())) { // job is for us
-                    tm.addNodeJob(nj); // send back NodeAnswer when job is finished
-                } else {
-                    JobHandler jh = new JobHandler(nj, getNodeConnector());
+                    tm.addNodeJob(nj); // post to webservice when finished
+                } else { // send it further
+                    JobHandler jh = new JobHandler(nj);
                     (new Thread(jh)).start();
                 }
-            }
-            if (obj instanceof NodeAnswer) {
-                NodeAnswer na = (NodeAnswer) obj;
-                AnswerHandler ah = new AnswerHandler(na);
-                (new Thread(ah)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,6 +75,8 @@ public class TCPNode implements Runnable {
     }
 
     private NodeConnector getNodeConnector() {
-        return new NodeConnector(getIP(), getPort());
+        return new NodeConnector(getIP(), getPort(), 0);
     }
+
+    private void addNodeConnector(NodeConnector nc) { connectionList.add(nc); }
 }

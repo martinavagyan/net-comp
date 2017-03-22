@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class JobHandler implements Runnable{
+public class JobHandler implements Runnable {
     private NodeJob nj;
 
-    public JobHandler(NodeJob nj, NodeConnector nc) {
+    public JobHandler(NodeJob nj) {
         this.nj = nj;
-        this.nj.pushTraceStack(nc); // add current node to traceStack
     }
 
     @Override

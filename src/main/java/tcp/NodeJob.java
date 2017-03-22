@@ -5,14 +5,14 @@ import java.util.Stack;
 
 
 public class NodeJob implements Serializable {
+    private long jobID;
     private Task task;
-    private Stack<NodeConnector> traceStack;
-    private Stack<NodeConnector> backTraceStack;
+    private Stack<NodeConnector> backTraceStack; // path to follow
 
 
-    public NodeJob (Task task, NodeAccept na) {
+    public NodeJob (Task task, NodeAnswer na, long jobID) {
         this.task = task;
-        this.traceStack =  new Stack<>();
+        this.jobID = jobID;
         this.backTraceStack = na.getTraceStack();
     }
 
@@ -24,16 +24,9 @@ public class NodeJob implements Serializable {
         return task;
     }
 
-    public void pushTraceStack(NodeConnector nc) {
-        traceStack.push(nc);
-    }
-
     public NodeConnector popBackTraceStack() {
         return backTraceStack.pop();
     }
 
-    public Stack<NodeConnector> getTraceStack() {
-        return (Stack<NodeConnector>) traceStack.clone();
-    }
 }
 
