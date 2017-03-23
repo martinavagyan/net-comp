@@ -24,6 +24,12 @@
             <artifactId>amqp-client</artifactId>
             <version>4.0.0</version>
         </dependency>
+        <dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.3</version>
+        </dependency>
     </dependencies>
 
     <build>
