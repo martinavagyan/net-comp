@@ -2,27 +2,16 @@ package tcp;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 
-public class TCPNode implements Runnable {
+public class WorkerNode extends TCPAbstractNode {
     private TaskManager tm;
-    private ArrayList<NodeConnector> connectionList;
-    private ServerSocket ssocket;
 
-    public TCPNode (int port) {
-        try {
-            this.ssocket = new ServerSocket(port, 10, InetAddress.getLocalHost());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public WorkerNode(int port) {
+        super(port);
         tm = new TaskManager(getNodeConnector());
         (new Thread(tm)).start();
-
-        connectionList = new ArrayList<>();
     }
 
     @Override
@@ -31,6 +20,7 @@ public class TCPNode implements Runnable {
         while (true) try {
             System.out.println("Patiently waiting...");
             System.out.println("IP: " + getIP() + "port: "+ getPort());
+
             Socket client = ssocket.accept();
             ObjectInputStream in = new ObjectInputStream(client.getInputStream());
             Object obj = in.readObject();
@@ -64,17 +54,4 @@ public class TCPNode implements Runnable {
         }
     }
 
-    private String getIP() {
-        return ssocket.getInetAddress().getHostAddress();
-    }
-
-    private Integer getPort() {
-        return ssocket.getLocalPort();
-    }
-
-    private NodeConnector getNodeConnector() {
-        return new NodeConnector(getIP(), getPort(), 0);
-    }
-
-    public void addNodeConnector(NodeConnector nc) { connectionList.add(nc); }
 }

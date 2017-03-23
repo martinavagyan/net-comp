@@ -3,30 +3,17 @@ package tcp;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AccessNode implements Runnable{ // Refactor with TCPNode
+public class AccessNode extends TCPAbstractNode {
     private HashMap<Long, TaskAssigner> taskTable;
-    private ArrayList<NodeConnector> connectionList;
-    private ServerSocket ssocket;
-    private final int size;
+    private final int numWorkerNodes;
 
-    public int getSize() {
-        return size;
-    }
 
-    public AccessNode(int port, int size) {
-        try {
-            this.ssocket = new ServerSocket(port, 10, InetAddress.getLocalHost());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.size = size;
-        connectionList = new ArrayList<>();
+    public AccessNode(int port, int numWorkerNodes) {
+        super(port);
+        this.numWorkerNodes = numWorkerNodes;
         taskTable = new HashMap<>();
     }
 
@@ -62,7 +49,7 @@ public class AccessNode implements Runnable{ // Refactor with TCPNode
         }
     }
 
-    public synchronized void sendNodeJob(long jobID) { // method must be called by TaskAssigner thus
+    public synchronized void sendNodeJob(long jobID) {
         System.out.println("Sending nodejob with id: "+ jobID);
         TaskAssigner ta = taskTable.remove(jobID);
         NodeJob nj = new NodeJob(ta.getTask(), ta.getBestNodeAnswer(), jobID);
@@ -70,17 +57,7 @@ public class AccessNode implements Runnable{ // Refactor with TCPNode
         (new Thread(jh)).start();
     }
 
-    private String getIP() {
-        return ssocket.getInetAddress().getHostAddress();
+    public int getNumWorkerNodes() {
+        return numWorkerNodes;
     }
-
-    private Integer getPort() {
-        return ssocket.getLocalPort();
-    }
-
-    private NodeConnector getNodeConnector() {
-        return new NodeConnector(getIP(), getPort(), 0);
-    }
-
-    public void addNodeConnector(NodeConnector nc) { connectionList.add(nc); }
 }

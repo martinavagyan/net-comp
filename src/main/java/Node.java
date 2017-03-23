@@ -1,10 +1,4 @@
-import mq.Receive;
-import mq.Send;
-import rmi.RmiClient;
-import rmi.RmiServer;
 import tcp.AccessNode;
-import tcp.AccessNodeInitiator;
-import tcp.TCPNode;
 import web.REST;
 
 import static tcp.AccessNodeInitiator.initiAccessNode;

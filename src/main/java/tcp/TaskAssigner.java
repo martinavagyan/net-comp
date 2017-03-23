@@ -1,7 +1,6 @@
 package tcp;
 
 
-import java.util.Comparator;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
@@ -17,17 +16,12 @@ public class TaskAssigner {
         this.jobID = jobID;
 
         this.an = an;
-        answerQueue = new PriorityQueue<>(new Comparator<NodeAnswer>() {
-            @Override
-            public int compare(NodeAnswer o1, NodeAnswer o2) {
-                return o1.compareTo(o2);
-            }
-        });
+        answerQueue = new PriorityQueue<>((o1, o2) -> o1.compareTo(o2));
     }
 
     public boolean addNodeAnswer(NodeAnswer na) {
         if (answerQueue.offer(na)) {
-            if (answerQueue.size() >= an.getSize()) {
+            if (answerQueue.size() >= an.getNumWorkerNodes()) {
                 an.sendNodeJob(answerQueue.peek().getJobID());
             }
             return true;

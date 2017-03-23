@@ -12,7 +12,7 @@ public class WorkerNodeInitiator {
 
         int port = Integer.parseInt(in.readLine());
         int numConnections = Integer.parseInt(in.readLine());
-        TCPNode tcpNode = new TCPNode(port);
+        WorkerNode tcpNode = new WorkerNode(port);
         for (int i=0; i < numConnections; ++i) {
             String line = in.readLine();
             String[] connector = line.split(" ");

@@ -12,8 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+
 
 public class TaskManager implements Runnable{
     private ArrayBlockingQueue<NodeJob> nodeJobQueue;
@@ -62,7 +61,8 @@ public class TaskManager implements Runnable{
         }
     }
 
+    //TODO
     public long getDelay() {
-        return nodeJobQueue.size()*100; // hard-coded for now
+        return nodeJobQueue.size()*100;
     }
 }
