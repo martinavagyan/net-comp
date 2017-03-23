@@ -2,7 +2,6 @@ package tcp;
 
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
@@ -12,7 +11,7 @@ public abstract class TCPAbstractNode implements Runnable {
 
     public TCPAbstractNode(int port) {
         try {
-            this.ssocket = new ServerSocket(port, 10, InetAddress.getLocalHost());
+            this.ssocket = new ServerSocket(port, 10);
         } catch (IOException e) {
             e.printStackTrace();
         }

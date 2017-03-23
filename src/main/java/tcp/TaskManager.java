@@ -39,7 +39,7 @@ public class TaskManager implements Runnable{
             if (nj != null) {
                 nj.getTask().execute();
                 // update webservice that job is done
-                System.out.print("Finished job with ID: " + nj.getJobID());
+                System.out.println("Finished job with ID: " + nj.getJobID());
 
                 HttpClient httpclient = HttpClients.createDefault();
                 HttpPost httppost = new HttpPost(host + "api/status/update/" + nj.getJobID());

@@ -18,8 +18,7 @@ public class WorkerNode extends TCPAbstractNode {
     public void run() {
         //noinspection InfiniteLoopStatement
         while (true) try {
-            System.out.println("Patiently waiting...");
-            System.out.println("IP: " + getIP() + "port: "+ getPort());
+            System.out.println("Patiently waiting...\n" + "IP: " + getIP() + " on port: "+ getPort());
 
             Socket client = ssocket.accept();
             ObjectInputStream in = new ObjectInputStream(client.getInputStream());
