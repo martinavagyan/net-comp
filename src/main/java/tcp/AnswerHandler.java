@@ -8,8 +8,8 @@ import java.net.Socket;
 public class AnswerHandler implements Runnable{
     private NodeAnswer na;
 
-    public AnswerHandler(NodeConnector nc, NodeAnswer n) {
-        this.na = n;
+    public AnswerHandler(NodeConnector nc, NodeAnswer na) {
+        this.na = na;
         this.na.pushTraceStack(nc); // add current NodeConnector to the traceStack
     }
 
