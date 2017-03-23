@@ -54,6 +54,7 @@ public class AccessNode implements Runnable{ // Refactor with TCPNode
     public synchronized void addNewTask(int size, long jobID) {
         TaskAssigner ta = new TaskAssigner(new Task(size), jobID, this);
         taskTable.put(jobID, ta);
+        sendNodeRequest(new NodeRequest(jobID));
     }
 
     private void sendNodeRequest(NodeRequest nr) {
@@ -63,7 +64,7 @@ public class AccessNode implements Runnable{ // Refactor with TCPNode
         }
     }
 
-    public synchronized void sendNodeJob(long jobID) { // method must be called by TaskAssigner thus -> eventlistener needed
+    public synchronized void sendNodeJob(long jobID) { // method must be called by TaskAssigner thus
         TaskAssigner ta = taskTable.remove(jobID);
         NodeJob nj = new NodeJob(ta.getTask(), ta.getBestNodeAnswer(), jobID);
         JobHandler jh = new JobHandler(nj);
@@ -82,4 +83,5 @@ public class AccessNode implements Runnable{ // Refactor with TCPNode
         return new NodeConnector(getIP(), getPort(), 0);
     }
 
+    public void addNodeConnector(NodeConnector nc) { connectionList.add(nc); }
 }
