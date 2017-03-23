@@ -22,11 +22,9 @@ public class NodeAnswer implements Serializable, Comparable<NodeAnswer> {
         return backTraceStack.pop();
     } // next NodeConnector to follow
 
-    public void pushTraceStack(NodeConnector nc) {traceStack.push(nc);}
+    public void pushTraceStack(NodeConnector nc) { traceStack.push(nc); }
 
-    public Stack<NodeConnector> getTraceStack() {
-        return (Stack<NodeConnector>)traceStack.clone();
-    }
+    public Stack<NodeConnector> getTraceStack() { return traceStack; }
 
     public long getDelay() {
         return delay;
@@ -37,9 +35,9 @@ public class NodeAnswer implements Serializable, Comparable<NodeAnswer> {
     }
 
     @Override
-    public int compareTo(NodeAnswer o) {
-        if (getDelay() > o.getDelay()) return 1;
-        else if (getDelay() == o.getDelay()) return 0;
+    public int compareTo(NodeAnswer that) {
+        if (this.getDelay() > that.getDelay()) return 1;
+        else if (this.getDelay() == that.getDelay()) return 0;
         return -1;
     }
 }

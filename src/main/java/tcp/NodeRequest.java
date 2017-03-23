@@ -20,9 +20,7 @@ public class NodeRequest implements Serializable{
         traceStack.push(nc);
     }
 
-    public Stack<NodeConnector> getTraceStack() {
-        return (Stack<NodeConnector>)traceStack.clone();
-    }
+    public Stack<NodeConnector> getTraceStack() { return traceStack; }
 
     public long getDelay() { return this.delay; }
 

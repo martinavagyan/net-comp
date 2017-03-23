@@ -24,6 +24,8 @@ public class NodeJob implements Serializable {
         return task;
     }
 
+    public long getJobID() { return jobID; }
+
     public NodeConnector popBackTraceStack() {
         return backTraceStack.pop();
     }

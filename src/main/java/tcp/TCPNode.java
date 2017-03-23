@@ -42,9 +42,10 @@ public class TCPNode implements Runnable {
                 (new Thread(ah)).start(); // send back the node answer to request (i.e. the delay)
 
                 for (NodeConnector nc : connectionList) {
-                    // CHECK that nc is not in nr trace Stack!!!!!!!!!!!!!!!!!!!
-                    RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
-                    (new Thread(rh)).start();
+                    if (!nr.getTraceStack().contains(nc)) {
+                        RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
+                        (new Thread(rh)).start();
+                    }
                 }
             } else if (obj instanceof NodeAnswer) { // propagate the answer further
                 NodeAnswer na = (NodeAnswer) obj;
@@ -78,5 +79,5 @@ public class TCPNode implements Runnable {
         return new NodeConnector(getIP(), getPort(), 0);
     }
 
-    private void addNodeConnector(NodeConnector nc) { connectionList.add(nc); }
+    public void addNodeConnector(NodeConnector nc) { connectionList.add(nc); }
 }
