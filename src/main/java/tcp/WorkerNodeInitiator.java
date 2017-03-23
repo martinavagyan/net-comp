@@ -8,16 +8,22 @@ import java.io.IOException;
 public class WorkerNodeInitiator {
 
     public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new FileReader(args[0]));
+        WorkerNode wn = initWorkerNode(args[0]);
+        (new Thread(wn)).start();
+    }
+
+    public static WorkerNode initWorkerNode(String filename) throws IOException { // similar to access node initiator- refactor
+        BufferedReader in = new BufferedReader(new FileReader(filename));
 
         int port = Integer.parseInt(in.readLine());
         int numConnections = Integer.parseInt(in.readLine());
-        WorkerNode tcpNode = new WorkerNode(port);
+        WorkerNode workerNode = new WorkerNode(port); // hard coded size of worker nodes
+
         for (int i=0; i < numConnections; ++i) {
             String line = in.readLine();
             String[] connector = line.split(" ");
-            tcpNode.addNodeConnector(new NodeConnector(connector[0], Integer.parseInt(connector[1]), Integer.parseInt(connector[2])));
+            workerNode.addNodeConnector(new NodeConnector(connector[0], Integer.parseInt(connector[1]), Integer.parseInt(connector[2])));
         }
-        (new Thread(tcpNode)).start();
+        return workerNode;
     }
 }

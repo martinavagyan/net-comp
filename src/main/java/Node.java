@@ -1,19 +1,18 @@
 import tcp.AccessNode;
 import web.REST;
 
-import static tcp.AccessNodeInitiator.initiAccessNode;
+import static tcp.AccessNodeInitiator.initAccessNode;
 
-/**
- * Created by jurgen on 22-3-17.
- */
+
 public class Node {
 
     public static void main(String[] args) {
         //REST api
         REST api = new REST();
         try {
-            AccessNode node = initiAccessNode("target/classes/access.txt");
+            AccessNode node = initAccessNode("access.txt", 1);
             api.setAccessNode(node);
+            // local testing: node.addNewTask(10000, 0);
             node.run();
         } catch (Exception e) {
             e.printStackTrace();
