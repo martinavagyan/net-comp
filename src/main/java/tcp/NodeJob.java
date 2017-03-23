@@ -17,7 +17,7 @@ public class NodeJob implements Serializable {
     }
 
     public boolean validate(NodeConnector nc) {
-        return backTraceStack.pop().equals(nc) && backTraceStack.isEmpty();
+        return backTraceStack.isEmpty();
     }
 
     public Task getTask() {

@@ -63,6 +63,7 @@ public class AccessNode implements Runnable{ // Refactor with TCPNode
     }
 
     public synchronized void sendNodeJob(long jobID) { // method must be called by TaskAssigner thus
+        System.out.println("Sending nodejob with id: "+ jobID);
         TaskAssigner ta = taskTable.remove(jobID);
         NodeJob nj = new NodeJob(ta.getTask(), ta.getBestNodeAnswer(), jobID);
         JobHandler jh = new JobHandler(nj);

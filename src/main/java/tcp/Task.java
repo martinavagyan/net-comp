@@ -1,12 +1,13 @@
 package tcp;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-public class Task {
+public class Task implements Serializable{
     private int size;
     private ArrayList<Integer> contentList;
 

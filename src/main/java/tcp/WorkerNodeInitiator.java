@@ -8,12 +8,11 @@ import java.io.IOException;
 public class WorkerNodeInitiator {
 
     public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new FileReader(args[1]));
+        BufferedReader in = new BufferedReader(new FileReader(args[0]));
 
         int port = Integer.parseInt(in.readLine());
         int numConnections = Integer.parseInt(in.readLine());
         TCPNode tcpNode = new TCPNode(port);
-
         for (int i=0; i < numConnections; ++i) {
             String line = in.readLine();
             String[] connector = line.split(" ");

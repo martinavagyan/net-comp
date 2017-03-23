@@ -1,9 +1,10 @@
 package tcp;
 
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class NodeConnector {
+public class NodeConnector implements Serializable{
     private String ip;
     private Integer port;
     private long delay;

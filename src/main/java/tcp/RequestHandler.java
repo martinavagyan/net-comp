@@ -21,6 +21,7 @@ public class RequestHandler implements Runnable {
     public void run() {
         try {
             Socket s = new Socket(nc.getIp(), nc.getPort());
+            System.out.println("Connected to: " + nc.getIp() + " " + nc.getPort());
             ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
             out.writeObject(nr);
             out.flush();
