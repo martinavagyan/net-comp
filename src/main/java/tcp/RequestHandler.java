@@ -1,10 +1,6 @@
 package tcp;
 
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-
 public class RequestHandler implements Runnable {
     private NodeConnector nc;
     private NodeRequest nr;
@@ -19,16 +15,6 @@ public class RequestHandler implements Runnable {
 
     @Override
     public void run() {
-        try {
-            Socket s = new Socket(nc.getIp(), nc.getPort());
-            System.out.println("Connected to: " + nc.getIp() + " " + nc.getPort());
-            ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-            out.writeObject(nr);
-            out.flush();
-            out.close();
-            s.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SocketSender.send(nc, nr);
     }
 }

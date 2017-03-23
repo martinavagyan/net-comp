@@ -14,17 +14,7 @@ public class JobHandler implements Runnable {
 
     @Override
     public void run() {
-        try {
-            NodeConnector nc = nj.popBackTraceStack();
-            Socket s = new Socket(nc.getIp(), nc.getPort());
-            ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-            out.writeObject(nj);
-            out.flush();
-            out.close();
-            s.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        NodeConnector nc = nj.popBackTraceStack();
+        SocketSender.send(nc, nj);
     }
 }

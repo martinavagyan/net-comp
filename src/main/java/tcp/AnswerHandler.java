@@ -1,12 +1,9 @@
 package tcp;
 
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-
 public class AnswerHandler implements Runnable{
     private NodeAnswer na;
+
 
     public AnswerHandler(NodeConnector nc, NodeAnswer na) {
         this.na = na;
@@ -15,16 +12,7 @@ public class AnswerHandler implements Runnable{
 
     @Override
     public void run() {
-        try {
-            NodeConnector nc = na.popBackTraceStack(); // get next node from the back trace
-            Socket s = new Socket(nc.getIp(), nc.getPort());
-            ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-            out.writeObject(na);
-            out.flush();
-            out.close();
-            s.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        NodeConnector nc = na.popBackTraceStack(); // get next node from the back trace
+        SocketSender.send(nc, na);
     }
 }
