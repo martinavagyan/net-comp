@@ -15,9 +15,9 @@ public class Node {
         //REST api
         REST api = new REST();
         AccessNode node = new AccessNode(1111, 50);
-        node.run();
         api.setAccessNode(node);
 
+        node.run();
         TCPNode tcp = new TCPNode(1211);
 
 
