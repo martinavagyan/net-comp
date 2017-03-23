@@ -3,8 +3,11 @@ import mq.Send;
 import rmi.RmiClient;
 import rmi.RmiServer;
 import tcp.AccessNode;
+import tcp.AccessNodeInitiator;
 import tcp.TCPNode;
 import web.REST;
+
+import static tcp.AccessNodeInitiator.initiAccessNode;
 
 /**
  * Created by jurgen on 22-3-17.
@@ -14,11 +17,14 @@ public class Node {
     public static void main(String[] args) {
         //REST api
         REST api = new REST();
-        AccessNode node = new AccessNode(1111, 50);
-        api.setAccessNode(node);
+        try {
+            AccessNode node = initiAccessNode("target/classes/access.txt");
+            api.setAccessNode(node);
+            node.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        node.run();
-        TCPNode tcp = new TCPNode(1211);
 
 
         /*

@@ -18,7 +18,7 @@ import org.json.simple.parser.JSONParser;
 public class TaskManager implements Runnable{
     private ArrayBlockingQueue<NodeJob> nodeJobQueue;
     private NodeConnector nc; // own node connector, used for identification when logging
-    private String host = "localhost:4567/";
+    private String host = "http://localhost:4567/";
 
     public TaskManager (NodeConnector nc) {
         this.nc = nc;
