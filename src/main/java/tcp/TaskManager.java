@@ -26,6 +26,7 @@ public class TaskManager implements Runnable{
             NodeJob nj = retrieveJob();
             nj.getTask().execute();
             // update webservice that job is done
+            System.out.print("Finished job with ID: " + nj.getJobID());
         }
     }
 
