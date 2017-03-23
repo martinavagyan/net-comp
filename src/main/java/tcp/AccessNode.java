@@ -44,9 +44,7 @@ public class AccessNode implements Runnable{ // Refactor with TCPNode
                 TaskAssigner ta = taskTable.get(jobID);
                 if (ta != null) { ta.addNodeAnswer(na); }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
