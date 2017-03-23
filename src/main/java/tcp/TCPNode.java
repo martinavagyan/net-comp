@@ -6,7 +6,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 public class TCPNode implements Runnable {
@@ -41,12 +40,10 @@ public class TCPNode implements Runnable {
                 AnswerHandler ah = new AnswerHandler(getNodeConnector(), na);
                 (new Thread(ah)).start(); // send back the node answer to request (i.e. the delay)
 
-                for (NodeConnector nc : connectionList) {
-                    if (!nr.getTraceStack().contains(nc)) {
-                        RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
-                        (new Thread(rh)).start();
-                    }
-                }
+                connectionList.stream().filter(nc -> !nr.getTraceStack().contains(nc)).forEach(nc -> {
+                    RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
+                    (new Thread(rh)).start();
+                });
             } else if (obj instanceof NodeAnswer) { // propagate the answer further
                 NodeAnswer na = (NodeAnswer) obj;
                 AnswerHandler ah = new AnswerHandler(getNodeConnector(), na);
@@ -60,9 +57,7 @@ public class TCPNode implements Runnable {
                     (new Thread(jh)).start();
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
