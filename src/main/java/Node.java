@@ -2,6 +2,7 @@ import mq.Receive;
 import mq.Send;
 import rmi.RmiClient;
 import rmi.RmiServer;
+import tcp.AccessNode;
 import web.REST;
 
 /**
@@ -11,8 +12,14 @@ public class Node {
 
     public static void main(String[] args) {
         //REST api
-        new REST();
+        REST api = new REST();
+        AccessNode node = new AccessNode(1111, 50);
+        api.setAccessNode(node);
 
+        node.run();
+
+
+        /*
         //messageQueue
         new Receive();
         new Send();
@@ -24,5 +31,6 @@ public class Node {
             server.startServer();
             client.getRemoteMessage();
         } catch (Exception e){ e.printStackTrace();}
+        */
     }
 }
