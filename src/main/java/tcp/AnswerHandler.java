@@ -13,6 +13,7 @@ public class AnswerHandler implements Runnable{
     @Override
     public void run() {
         NodeConnector nc = na.popBackTraceStack(); // get next node from the back trace
+        System.out.println("Going to send NodeAnswer to " + nc.getIp() + " on port: " + nc.getPort());
         SocketSender.send(nc, na);
     }
 }

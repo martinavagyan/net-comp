@@ -15,6 +15,7 @@ public class JobHandler implements Runnable {
     @Override
     public void run() {
         NodeConnector nc = nj.popBackTraceStack();
+        System.out.println("Going to send NodeJob to " + nc.getIp() + " on port: " + nc.getPort());
         SocketSender.send(nc, nj);
     }
 }

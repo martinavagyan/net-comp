@@ -26,6 +26,7 @@ public class WorkerNode extends TCPAbstractNode {
 
             if (obj instanceof NodeRequest) {
                 NodeRequest nr = (NodeRequest) obj;
+                System.out.println("Received NodeRequest" + nr.getJobID());
 
                 NodeAnswer na = new NodeAnswer(nr, tm.getDelay());
                 AnswerHandler ah = new AnswerHandler(getNodeConnector(), na);
@@ -37,10 +38,13 @@ public class WorkerNode extends TCPAbstractNode {
                 });
             } else if (obj instanceof NodeAnswer) { // propagate the answer further
                 NodeAnswer na = (NodeAnswer) obj;
+
+                System.out.println("Received NodeAnswer" + na.getJobID());
                 AnswerHandler ah = new AnswerHandler(getNodeConnector(), na);
                 (new Thread(ah)).start(); // send the answer further
             } else if (obj instanceof NodeJob) {
                 NodeJob nj = (NodeJob) obj;
+                System.out.println("Received NodeJob" + nj.getJobID());
                 if (nj.validate(getNodeConnector())) { // job is for us
                     tm.addNodeJob(nj); // post to webservice when finished
                 } else { // send it further
