@@ -10,7 +10,7 @@ public class Node {
         //REST api
         REST api = new REST();
         try {
-            AccessNode node = initAccessNode("access.txt", 1);
+            AccessNode node = initAccessNode("access.txt");
             api.setAccessNode(node);
             node.addNewTask(10000, 2);
             node.addNewTask(100000, 3);

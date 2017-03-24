@@ -8,9 +8,9 @@ import java.net.Socket;
 public class WorkerNode extends TCPAbstractNode {
     private TaskManager tm;
 
-    public WorkerNode(int port) {
+    public WorkerNode(int port, String webHost) {
         super(port);
-        tm = new TaskManager(getNodeConnector());
+        tm = new TaskManager(getNodeConnector(), webHost);
         (new Thread(tm)).start();
     }
 

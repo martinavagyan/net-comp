@@ -17,9 +17,10 @@ import org.apache.http.message.BasicNameValuePair;
 public class TaskManager implements Runnable{
     private ArrayBlockingQueue<NodeJob> nodeJobQueue;
     private NodeConnector nc; // own node connector, used for identification when logging
-    private String host = "http://localhost:4567/";
+    private String host;
 
-    public TaskManager (NodeConnector nc) {
+    public TaskManager (NodeConnector nc, String host) {
+        this.host = host;
         this.nc = nc;
         nodeJobQueue = new ArrayBlockingQueue<>(10); // hard-coded capacity
     }
