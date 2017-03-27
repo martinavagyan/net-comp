@@ -1,43 +1,65 @@
 package rmi;
 
+import java.net.InetAddress;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.rmi.registry.*;
 
-public class RmiServer extends UnicastRemoteObject implements RmiServerIntf {
-    public static final String MESSAGE = "Hello World";
-    private RmiServer server;
+public class RmiServer {
+
+    private static InetAddress ip;
+    private static String host;
+    private static int PORT = 1099;
+    private static  String rmiObjectName;
+
+    private RmiServerObjectImplementation serverObj;
 
     public RmiServer() throws RemoteException {
-        super(0);    // required to avoid the 'rmic' step, see below
-    }
-
-    public String getMessage() {
-        return MESSAGE;
+        try {
+            ip = InetAddress.getLocalHost();
+            host = ip.getHostName();
+            System.out.println("Server IP address : " + ip);
+            System.out.println("Server Hostname : " + host);
+        } catch (java.net.UnknownHostException e) {
+            e.printStackTrace();
+        }
+        rmiObjectName = "rmi://" + ip.getHostAddress() + ":" + PORT + "/RmiServer";
     }
 
     public void startServer() throws Exception {
         System.out.println("RMI server started");
 
-        try { //special exception handler for registry creation
-            LocateRegistry.createRegistry(1099);
+        /**
+         * special exception handler for registry creation
+         * */
+        try {
+            LocateRegistry.createRegistry(PORT);
             System.out.println("java RMI registry created.");
         } catch (RemoteException e) {
-            //do nothing, error means registry already exists
+            /**
+             * do nothing, error means registry already exists
+             * */
             System.out.println("java RMI registry already exists.");
         }
 
-        //Instantiate rmi.RmiServer
+         /**
+         * instance of rmi server object
+         * */
 
-        server = new RmiServer();
+        System.setProperty("java.rmi.server.hostname", ip.getHostAddress());
+        System.setSecurityManager(new SecurityManager());
 
-        // Bind this object instance to the name "rmi.RmiServer"
-        Naming.rebind("//localhost/rmi.RmiServer", server);
-        System.out.println("PeerServer bound in registry");
-    }
+        //if (System.getSecurityManager() == null)
+          //  System.setSecurityManager(new RMISecurityManager());
 
-    public void stopServer() throws Exception {
-        server.stopServer();
+        serverObj = new RmiServerObjectImplementation();
+        System.setProperty("java.security.policy", "client.policy");
+
+        /**
+         * bind the server with object
+         * */
+        Naming.rebind(rmiObjectName, serverObj);
+
+        System.out.println("Server binding complete...\n");
     }
 }

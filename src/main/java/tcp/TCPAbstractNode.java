@@ -1,19 +1,30 @@
 package tcp;
 
 
+import rmi.RmiClient;
+
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.ServerSocket;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
 public abstract class TCPAbstractNode implements Runnable {
     protected ArrayList<NodeConnector> connectionList;
     protected ServerSocket ssocket;
+    protected RmiClient rmiClient;
 
-    public TCPAbstractNode(int port) {
+    public TCPAbstractNode(int port){
+        try {
+            System.setProperty("java.rmi.server.hostname", InetAddress.getLocalHost().getHostAddress());
+            System.setSecurityManager(new SecurityManager());
+            rmiClient = new RmiClient(InetAddress.getLocalHost().getHostAddress(),1099);
+            rmiClient.logMessage("Connected! just now");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             String ip = null;
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
