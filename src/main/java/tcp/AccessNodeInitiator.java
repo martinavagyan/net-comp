@@ -7,11 +7,12 @@ import java.io.IOException;
 
 public class AccessNodeInitiator {
 
-    public static AccessNode initAccessNode(String filename, int numWorkerNodes) throws IOException {
+    public static AccessNode initAccessNode(String filename) throws IOException {
         BufferedReader in = new BufferedReader(new FileReader(filename));
 
         int port = Integer.parseInt(in.readLine());
         int numConnections = Integer.parseInt(in.readLine());
+        int numWorkerNodes = Integer.parseInt(in.readLine());
         AccessNode accessNode = new AccessNode(port, numWorkerNodes); // hard coded size of worker nodes
 
         for (int i=0; i < numConnections; ++i) {

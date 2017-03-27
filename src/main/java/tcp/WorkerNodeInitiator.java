@@ -11,12 +11,13 @@ public class WorkerNodeInitiator {
         (new Thread(wn)).start();
     }
 
-    public static WorkerNode initWorkerNode(String filename) throws IOException { // similar to access node initiator- refactor
+    public static WorkerNode initWorkerNode(String filename) throws IOException {
         BufferedReader in = new BufferedReader(new FileReader(filename));
 
         int port = Integer.parseInt(in.readLine());
         int numConnections = Integer.parseInt(in.readLine());
-        WorkerNode workerNode = new WorkerNode(port); // hard coded size of worker nodes
+        String webHost = in.readLine();
+        WorkerNode workerNode = new WorkerNode(port, webHost);
 
         for (int i=0; i < numConnections; ++i) {
             String line = in.readLine();
