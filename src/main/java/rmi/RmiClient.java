@@ -15,7 +15,7 @@ public class RmiClient {
     private String rmiObjectName;
 
     public RmiClient(String ip, int port){
-        rmiObjectName = "rmi://" + ip + ":" + port   + "/RmiServer";
+        rmiObjectName = "rmi://" + ip + "/RmiServer";
     }
 
     /**
@@ -41,7 +41,6 @@ public class RmiClient {
         }
         catch (ConnectException conEx){
             System.out.println("Unable to connect to server!");
-            System.exit(1);
         } catch (RemoteException e) {
             System.out.println("Custom: RemoteException");
             e.printStackTrace();

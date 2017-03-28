@@ -15,13 +15,12 @@ public abstract class TCPAbstractNode implements Runnable {
 
     public TCPAbstractNode(int port){
         try {
-            System.setProperty("java.rmi.server.hostname", InetAddress.getLocalHost().getHostAddress());
+            String ipAddress = "192.168.2.122";
+            System.setProperty("java.rmi.server.hostname", ipAddress);
             System.setSecurityManager(new SecurityManager());
-            rmiClient = new RmiClient(InetAddress.getLocalHost().getHostAddress(),1099);
-            rmiClient.logMessage("Connected! just now");
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
+            rmiClient = new RmiClient(ipAddress ,1099);
+            //rmiClient.logMessage("Connected! just now");
+        }  catch (Exception e) {
             e.printStackTrace();
         }
 

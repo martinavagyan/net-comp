@@ -23,7 +23,7 @@ public class RmiServer {
         } catch (java.net.UnknownHostException e) {
             e.printStackTrace();
         }
-        rmiObjectName = "rmi://" + ip.getHostAddress() + ":" + PORT + "/RmiServer";
+        rmiObjectName = "rmi://" + ip.getHostAddress() + "/RmiServer";
     }
 
     public void startServer() throws Exception {

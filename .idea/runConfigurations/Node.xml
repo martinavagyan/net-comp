@@ -2,8 +2,8 @@
   <configuration default="false" name="Node" type="Application" factoryName="Application" nameIsGenerated="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="Node" />
-    <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="" />
+    <option name="VM_PARAMETERS" value="-Djava.rmi.server.codebase=file:C:\Users\Martin\Documents\GitHub\net-comp\src\main\java\rmi -Djava.security.policy=file:C:\Users\Martin\Documents\GitHub\net-comp\src\main\java\rmi\client.policy" />
+    <option name="PROGRAM_PARAMETERS" value="access.txt" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/target/classes" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
