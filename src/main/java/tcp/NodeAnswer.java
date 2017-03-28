@@ -1,38 +1,28 @@
 package tcp;
 
 import java.io.Serializable;
-import java.util.Comparator;
-import java.util.Stack;
 
 public class NodeAnswer implements Serializable, Comparable<NodeAnswer> {
     private long jobID;
     private long delay;
-    private Stack<NodeConnector> traceStack; // path it creates
-    private Stack<NodeConnector> backTraceStack; // path to follow
+    private NodeConnector origin;
+    private NodeConnector destination;
 
 
-    public NodeAnswer(NodeRequest nr, long delay) {
+    public NodeAnswer(NodeRequest nr, long delay, NodeConnector origin) {
         this.delay = nr.getDelay() + delay; // delay from request travel and current node
         this.jobID = nr.getJobID();
-        traceStack = new Stack<>();
-        backTraceStack = nr.getTraceStack();
+        this.origin = origin;
+        this.destination = nr.getOrigin();
     }
 
-    public NodeConnector popBackTraceStack() {
-        return backTraceStack.pop();
-    } // next NodeConnector to follow
+    public long getDelay() { return delay; }
 
-    public void pushTraceStack(NodeConnector nc) { traceStack.push(nc); }
+    public long getJobID() { return jobID; }
 
-    public Stack<NodeConnector> getTraceStack() { return traceStack; }
+    public NodeConnector getOrigin() { return origin; }
 
-    public long getDelay() {
-        return delay;
-    }
-
-    public long getJobID() {
-        return jobID;
-    }
+    public NodeConnector getDestination() { return destination; }
 
     @Override
     public int compareTo(NodeAnswer that) {

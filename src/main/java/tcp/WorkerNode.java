@@ -29,28 +29,19 @@ public class WorkerNode extends TCPAbstractNode {
                 NodeRequest nr = (NodeRequest) obj;
                 rmiClient.logMessage("Received NodeRequest" + nr.getJobID());
 
-                NodeAnswer na = new NodeAnswer(nr, tm.getDelay());
-                AnswerHandler ah = new AnswerHandler(getNodeConnector(), na);
+                NodeAnswer na = new NodeAnswer(nr, tm.getDelay(), getNodeConnector());
+                AnswerHandler ah = new AnswerHandler(na);
                 (new Thread(ah)).start(); // send back the node answer to request (i.e. the delay)
 
                 connectionList.stream().filter(nc -> !nr.getTraceStack().contains(nc)).forEach(nc -> {
                     RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
                     (new Thread(rh)).start();
                 });
-            } else if (obj instanceof NodeAnswer) { // propagate the answer further
-                NodeAnswer na = (NodeAnswer) obj;
-
-                rmiClient.logMessage("Received NodeAnswer" + na.getJobID());
-                AnswerHandler ah = new AnswerHandler(getNodeConnector(), na);
-                (new Thread(ah)).start(); // send the answer further
             } else if (obj instanceof NodeJob) {
                 NodeJob nj = (NodeJob) obj;
                 rmiClient.logMessage("Received NodeJob" + nj.getJobID());
                 if (nj.validate(getNodeConnector())) { // job is for us
                     tm.addNodeJob(nj); // post to webservice when finished
-                } else { // send it further
-                    JobHandler jh = new JobHandler(nj);
-                    (new Thread(jh)).start();
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

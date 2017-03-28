@@ -7,18 +7,16 @@ import java.util.Stack;
 public class NodeJob implements Serializable {
     private long jobID;
     private Task task;
-    private Stack<NodeConnector> backTraceStack; // path to follow
+    private NodeConnector destination;
 
 
     public NodeJob (Task task, NodeAnswer na, long jobID) {
         this.task = task;
         this.jobID = jobID;
-        this.backTraceStack = na.getTraceStack();
+        this.destination = na.getOrigin();
     }
 
-    public boolean validate(NodeConnector nc) {
-        return backTraceStack.isEmpty();
-    }
+    public boolean validate(NodeConnector nc) { return destination.equals(nc); }
 
     public Task getTask() {
         return task;
@@ -26,9 +24,6 @@ public class NodeJob implements Serializable {
 
     public long getJobID() { return jobID; }
 
-    public NodeConnector popBackTraceStack() {
-        return backTraceStack.pop();
-    }
-
+    public NodeConnector getDestination() { return destination; }
 }
 
