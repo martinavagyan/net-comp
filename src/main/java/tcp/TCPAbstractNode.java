@@ -15,8 +15,7 @@ public abstract class TCPAbstractNode implements Runnable {
 
     public TCPAbstractNode(int port){
         try {
-            String ipAddress = "145.97.158.163";
-            System.setProperty("java.rmi.server.hostname", ipAddress);
+            String ipAddress = "145.97.151.48";
             System.setSecurityManager(new SecurityManager());
             rmiClient = new RmiClient(ipAddress ,1099);
             rmiClient.logMessage("Connected! just now");

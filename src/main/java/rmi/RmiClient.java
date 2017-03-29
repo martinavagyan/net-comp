@@ -15,6 +15,8 @@ public class RmiClient {
     private String rmiObjectName;
 
     public RmiClient(String ip, int port){
+        System.setProperty("java.rmi.server.hostname", ip);
+        System.setSecurityManager(new SecurityManager());
         rmiObjectName = "rmi://" + ip + "/RmiServer";
     }
 
