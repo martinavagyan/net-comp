@@ -13,11 +13,9 @@ public abstract class TCPAbstractNode implements Runnable {
     protected ServerSocket ssocket;
     protected RmiClient rmiClient;
 
-    public TCPAbstractNode(int port){
+    public TCPAbstractNode(int port,String rmiIp, int rmiPort ){
         try {
-            String ipAddress = "145.97.151.48";
-            System.setSecurityManager(new SecurityManager());
-            rmiClient = new RmiClient(ipAddress ,1099);
+            rmiClient = new RmiClient(rmiIp ,rmiPort);
             rmiClient.logMessage("Connected! just now");
         }  catch (Exception e) {
             e.printStackTrace();

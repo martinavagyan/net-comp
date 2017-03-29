@@ -9,8 +9,8 @@ public class WorkerNode extends TCPAbstractNode {
     private TaskManager tm;
 
 
-    public WorkerNode(int port, String webHost) {
-        super(port);
+    public WorkerNode(int port, String webHost,String rmiIp, int rmiPort) {
+        super(port,rmiIp,rmiPort);
         tm = new TaskManager(getNodeConnector(), webHost);
         (new Thread(tm)).start();
     }

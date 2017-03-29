@@ -17,7 +17,11 @@ public class WorkerNodeInitiator {
         int port = Integer.parseInt(in.readLine());
         int numConnections = Integer.parseInt(in.readLine());
         String webHost = in.readLine();
-        WorkerNode workerNode = new WorkerNode(port, webHost);
+
+        String rmiline = in.readLine();
+        String[] rmiSpec = rmiline.split(" ");
+
+        WorkerNode workerNode = new WorkerNode(port, webHost, rmiSpec[0], Integer.parseInt(rmiSpec[1]));
 
         for (int i=0; i < numConnections; ++i) {
             String line = in.readLine();

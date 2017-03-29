@@ -13,7 +13,10 @@ public class AccessNodeInitiator {
         int port = Integer.parseInt(in.readLine());
         int numConnections = Integer.parseInt(in.readLine());
         int numWorkerNodes = Integer.parseInt(in.readLine());
-        AccessNode accessNode = new AccessNode(port, numWorkerNodes); // hard coded size of worker nodes
+
+        String rmiline = in.readLine();
+        String[] rmiSpec = rmiline.split(" ");
+        AccessNode accessNode = new AccessNode(port, numWorkerNodes,rmiSpec[0], Integer.parseInt(rmiSpec[1]));
 
         for (int i=0; i < numConnections; ++i) {
             String line = in.readLine();

@@ -11,8 +11,8 @@ public class AccessNode extends TCPAbstractNode {
     private final int numWorkerNodes;
 
 
-    public AccessNode(int port, int numWorkerNodes) {
-        super(port);
+    public AccessNode(int port, int numWorkerNodes,String rmiIp,int rmiPort) {
+        super(port,rmiIp,rmiPort);
         this.numWorkerNodes = numWorkerNodes;
         taskTable = new HashMap<>();
     }
