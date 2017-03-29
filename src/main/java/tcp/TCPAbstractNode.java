@@ -15,11 +15,11 @@ public abstract class TCPAbstractNode implements Runnable {
 
     public TCPAbstractNode(int port){
         try {
-            String ipAddress = "192.168.2.122";
+            String ipAddress = "145.97.158.163";
             System.setProperty("java.rmi.server.hostname", ipAddress);
             System.setSecurityManager(new SecurityManager());
             rmiClient = new RmiClient(ipAddress ,1099);
-            //rmiClient.logMessage("Connected! just now");
+            rmiClient.logMessage("Connected! just now");
         }  catch (Exception e) {
             e.printStackTrace();
         }
