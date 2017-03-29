@@ -2,27 +2,16 @@ package tcp;
 
 import java.io.Serializable;
 
-public class NodeAnswer implements Serializable, Comparable<NodeAnswer> {
-    private long jobID;
+public class NodeAnswer extends AbstractNodePacket implements Serializable, Comparable<NodeAnswer> {
     private long delay;
-    private NodeConnector origin;
-    private NodeConnector destination;
 
 
     public NodeAnswer(NodeRequest nr, long delay, NodeConnector origin) {
+        super(nr.getJobID(), origin, nr.getOrigin());
         this.delay = nr.getDelay() + delay; // delay from request travel and current node
-        this.jobID = nr.getJobID();
-        this.origin = origin;
-        this.destination = nr.getOrigin();
     }
 
     public long getDelay() { return delay; }
-
-    public long getJobID() { return jobID; }
-
-    public NodeConnector getOrigin() { return origin; }
-
-    public NodeConnector getDestination() { return destination; }
 
     @Override
     public int compareTo(NodeAnswer that) {

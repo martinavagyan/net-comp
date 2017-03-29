@@ -2,4 +2,4 @@
 1
 1
 145.97.151.48 1099          #Rmi Server IP and port
-145.97.151.48 8802 100      #Node connection
+145.97.158.163   8802 100      #Node connection
