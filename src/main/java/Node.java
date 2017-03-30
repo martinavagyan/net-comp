@@ -1,38 +1,21 @@
-import tcp.AccessNode;
+
+import tcp.ProxyNode;
 import web.REST;
 
-import static tcp.AccessNodeInitiator.initAccessNode;
+import static tcp.ProxyNodeInitiator.initProxyNode;
 
 
 public class Node {
 
     public static void main(String[] args) {
-        //REST api
         REST api = new REST();
         try {
-            AccessNode node = initAccessNode("access.txt");
-            api.setAccessNode(node);
-           // node.addNewTask(1000000, 8);
-           // node.addNewTask(1500000, 10);
-            node.run();
+            ProxyNode proxy = initProxyNode("proxy.txt");
+            api.setProxyNode(proxy);
+            proxy.addNewTask(1000000, 8);
+            proxy.addNewTask(1500000, 10);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
-        /*
-        //messageQueue
-        new Receive();
-        new Send();
-
-        try {
-            //RMI
-            RmiServer server = new RmiServer();
-            RmiClient client = new RmiClient();
-            server.startServer();
-            client.getRemoteMessage();
-        } catch (Exception e){ e.printStackTrace();}
-        */
     }
 }

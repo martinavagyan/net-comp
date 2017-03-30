@@ -7,6 +7,11 @@ import java.io.IOException;
 
 public class AccessNodeInitiator {
 
+    public static void main(String[] args) throws IOException {
+        AccessNode wn = initAccessNode(args[0]);
+        (new Thread(wn)).start();
+    }
+
     public static AccessNode initAccessNode(String filename) throws IOException {
         BufferedReader in = new BufferedReader(new FileReader(filename));
 

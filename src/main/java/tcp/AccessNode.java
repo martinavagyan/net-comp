@@ -30,13 +30,16 @@ public class AccessNode extends TCPAbstractNode {
                 Long jobID = na.getJobID();
                 TaskAssigner ta = taskTable.get(jobID);
                 if (ta != null) { ta.addNodeAnswer(na); }
+            } else if (obj instanceof NodeTask) {
+                NodeTask nt = (NodeTask)obj;
+                addNewTask(nt.getSize(), nt.getJobID());
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public synchronized void addNewTask(int size, long jobID) {
+    private synchronized void addNewTask(int size, long jobID) {
         TaskAssigner ta = new TaskAssigner(new Task(size), jobID, this);
         taskTable.put(jobID, ta);
         sendNodeRequest(new NodeRequest(jobID, getNodeConnector()));
