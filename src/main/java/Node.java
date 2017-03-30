@@ -12,8 +12,6 @@ public class Node {
         try {
             AccessNode node = initAccessNode("access.txt", 1);
             api.setAccessNode(node);
-            node.addNewTask(10000, 2);
-            node.addNewTask(100000, 3);
             node.run();
         } catch (Exception e) {
             e.printStackTrace();
