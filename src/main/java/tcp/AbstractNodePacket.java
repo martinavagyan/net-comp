@@ -1,7 +1,9 @@
 package tcp;
 
 
-public abstract class AbstractNodePacket {
+import java.io.Serializable;
+
+public abstract class AbstractNodePacket implements Serializable{
     private long jobID;
     private NodeConnector origin;
     private NodeConnector destination;

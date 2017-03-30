@@ -53,7 +53,7 @@ public class TaskManager implements Runnable, CallBack {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String result = entity.getContent().toString();
-                System.out.println(result);
+                //System.out.println(result);
             }
         } catch (Exception e) {
             e.printStackTrace();
