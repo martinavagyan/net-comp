@@ -15,6 +15,7 @@ public class RequestHandler implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("Going to send NodeRequest to " + nc.getIp() + " on port: " + nc.getPort());
         SocketSender.send(nc, nr);
     }
 }

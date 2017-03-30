@@ -11,8 +11,8 @@ public class AccessNode extends TCPAbstractNode {
     private final int numWorkerNodes;
 
 
-    public AccessNode(int port, int numWorkerNodes) {
-        super(port);
+    public AccessNode(int port, int numWorkerNodes,String rmiIp,int rmiPort) {
+        super(port,rmiIp,rmiPort);
         this.numWorkerNodes = numWorkerNodes;
         taskTable = new HashMap<>();
     }
@@ -39,7 +39,7 @@ public class AccessNode extends TCPAbstractNode {
     public synchronized void addNewTask(int size, long jobID) {
         TaskAssigner ta = new TaskAssigner(new Task(size), jobID, this);
         taskTable.put(jobID, ta);
-        sendNodeRequest(new NodeRequest(jobID));
+        sendNodeRequest(new NodeRequest(jobID, getNodeConnector()));
     }
 
     private void sendNodeRequest(NodeRequest nr) {

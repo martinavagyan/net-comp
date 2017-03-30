@@ -5,14 +5,12 @@ public class AnswerHandler implements Runnable{
     private NodeAnswer na;
 
 
-    public AnswerHandler(NodeConnector nc, NodeAnswer na) {
-        this.na = na;
-        this.na.pushTraceStack(nc); // add current NodeConnector to the traceStack
-    }
+    public AnswerHandler(NodeAnswer na) { this.na = na; }
 
     @Override
     public void run() {
-        NodeConnector nc = na.popBackTraceStack(); // get next node from the back trace
+        NodeConnector nc = na.getDestination(); // get next node from the back trace
+        System.out.println("Going to send NodeAnswer to " + nc.getIp() + " on port: " + nc.getPort());
         SocketSender.send(nc, na);
     }
 }

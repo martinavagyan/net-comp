@@ -1,6 +1,5 @@
 package tcp;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,12 +11,17 @@ public class WorkerNodeInitiator {
         (new Thread(wn)).start();
     }
 
-    public static WorkerNode initWorkerNode(String filename) throws IOException { // similar to access node initiator- refactor
+    public static WorkerNode initWorkerNode(String filename) throws IOException {
         BufferedReader in = new BufferedReader(new FileReader(filename));
 
         int port = Integer.parseInt(in.readLine());
         int numConnections = Integer.parseInt(in.readLine());
-        WorkerNode workerNode = new WorkerNode(port); // hard coded size of worker nodes
+        String webHost = in.readLine();
+
+        String rmiline = in.readLine();
+        String[] rmiSpec = rmiline.split(" ");
+
+        WorkerNode workerNode = new WorkerNode(port, webHost, rmiSpec[0], Integer.parseInt(rmiSpec[1]));
 
         for (int i=0; i < numConnections; ++i) {
             String line = in.readLine();

@@ -19,9 +19,10 @@ import org.apache.http.message.BasicNameValuePair;
 public class TaskManager implements Runnable, CallBack {
     private MessageQueue mq;
     private NodeConnector nc; // own node connector, used for identification when logging
-    private String host = "http://localhost:4567/";
+    private String host;
 
-    public TaskManager (NodeConnector nc) {
+    public TaskManager (NodeConnector nc, String host) {
+        this.host = host;
         this.nc = nc;
         mq = new MessageQueue(); // hard-coded capacity
     }
