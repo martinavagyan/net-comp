@@ -13,9 +13,12 @@ public class NodeJob extends AbstractNodePacket implements Serializable {
         this.task = task;
     }
 
+
+
     public Task getTask() {
         return task;
     }
 
+    public boolean validate(NodeConnector nc) { return nc.equals(getDestination());  }
 }
 
