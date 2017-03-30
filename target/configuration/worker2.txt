@@ -1,4 +1,5 @@
-8803
-2
-192.168.133.1 8801 150
-192.168.133.1 8802 25
+8803    # Port to connect this worker node
+1       # Number of connections in its connection list
+http://192.168.178.16:4567/  # Web service address
+192.168.178.16 1099          # Rmi Server ip and port
+192.168.178.16 8802 100      # Node connection (first item in connection list: ip, port and delay)
