@@ -59,8 +59,8 @@ public class RmiLogger {
     /**
      * Test the connection by sending a message
      * */
-    public void testConnectionLog(){
-        sendLog("Connection is successful!");
+    public void testConnectionLog(String ip){
+        sendLog("Node with IP: " + ip + " successfully connected!");
     }
 
     /**

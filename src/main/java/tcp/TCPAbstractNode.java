@@ -16,8 +16,6 @@ public abstract class TCPAbstractNode implements Runnable {
 
     public TCPAbstractNode(int port,String rmiIp, int rmiPort ){
         rmiLogger = new RmiLogger(rmiIp ,rmiPort);
-        rmiLogger.testConnectionLog();
-
         try {
             String ip = null;
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -36,6 +34,7 @@ public abstract class TCPAbstractNode implements Runnable {
             }
 
             this.ssocket = new ServerSocket(port, 10, InetAddress.getByName(ip));
+            rmiLogger.testConnectionLog(getNodeConnector().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
