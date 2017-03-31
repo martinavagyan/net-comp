@@ -41,7 +41,7 @@ public class AccessNode extends TCPAbstractNode {
                 NodeTask nt = (NodeTask)obj;
 
                 //Log received Task with local time
-                rmiLogger.receivedNodeTaskLog(getNodeConnector().toString());
+                rmiLogger.receivedNodeTaskLog(getNodeConnector().toString(),nt.getJobID()+"");
 
                 addNewTask(nt.getSize(), nt.getJobID());
             }
@@ -61,7 +61,7 @@ public class AccessNode extends TCPAbstractNode {
     private void sendNodeRequest(NodeRequest nr) {
         for (NodeConnector nc : connectionList) {
             //Log sending node request
-            rmiLogger.sendNodeRequestLog(getNodeConnector().toString());
+            rmiLogger.sendNodeRequestLog(getNodeConnector().toString(), nr.getJobID() +"", nc.toString());
 
             RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
             (new Thread(rh)).start();
@@ -69,12 +69,14 @@ public class AccessNode extends TCPAbstractNode {
     }
 
     public synchronized void sendNodeJob(long jobID) {
-        //Log sending node job
-        rmiLogger.sendNodeJobLog(getNodeConnector().toString());
 
         TaskAssigner ta = taskTable.remove(jobID);
         NodeJob nj = new NodeJob(ta.getTask(), ta.getBestNodeAnswer(), jobID);
         JobHandler jh = new JobHandler(nj);
+
+        //Log sending node job
+        rmiLogger.sendNodeJobLog(getNodeConnector().toString(),jobID+"",nj.getDestination().toString());
+
         (new Thread(jh)).start();
     }
 

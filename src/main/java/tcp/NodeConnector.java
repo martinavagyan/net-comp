@@ -44,6 +44,6 @@ public class NodeConnector implements Serializable{
 
     @Override
     public String toString() {
-        return "IP: " + ip + "| PORT: " + port;
+        return "IP: " + ip + " | PORT: " + port;
     }
 }

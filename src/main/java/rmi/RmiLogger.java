@@ -15,30 +15,30 @@ public class RmiLogger {
     /**
      * Received node request message
      * */
-    public void receivedNodeRequestLog(String jobID){
-        sendLog("Received NodeRequest with jobID: "+jobID);
+    public void receivedNodeRequestLog(String nodeConnector, String jobID){
+        sendLog(nodeConnector + " - received NodeRequest with jobID: "+jobID);
     }
 
     /**
      * Received node request message
      * */
-    public void receivedNodeJobLog(String jobID){
-        sendLog("Received NodeJob with jobID: "+jobID);
+    public void receivedNodeJobLog(String nodeConnector,String jobID){
+        sendLog(nodeConnector + "- received NodeJob with jobID: "+jobID);
     }
 
 
     /**
      * Node Request message
      * */
-    public void sendNodeRequestLog(String nodeConnector){
-        sendLog(nodeConnector + " - send node request ");
+    public void sendNodeRequestLog(String nodeConnector, String jobID, String destination){
+        sendLog(nodeConnector + " - send node request with jobID: " + jobID + " to " + destination);
     }
 
     /**
      * Node Job message
      * */
-    public void sendNodeJobLog(String nodeConnector){
-        sendLog(nodeConnector + " - send node job ");
+    public void sendNodeJobLog(String nodeConnector, String jobID, String destination){
+        sendLog(nodeConnector + " - send node job with jobID: " + jobID + " to " + destination);
     }
 
     /**
@@ -46,21 +46,21 @@ public class RmiLogger {
      * */
     public void receivedNodeAnswerLog(String nodeConnector, NodeAnswer na){
         sendLog(nodeConnector + " - received node answer from "
-                + na.getOrigin() + " for JobID" + na.getJobID());
+                + na.getOrigin() + " for JobID: " + na.getJobID());
     }
 
     /**
      * Node Task message
      * */
-    public void receivedNodeTaskLog(String nodeConnector){
-        sendLog(nodeConnector + " - received node task");
+    public void receivedNodeTaskLog(String nodeConnector, String jobID){
+        sendLog(nodeConnector + " - received node task with jobID: "+ jobID);
     }
 
     /**
      * Test the connection by sending a message
      * */
     public void testConnectionLog(String ip){
-        sendLog("Node with IP: " + ip + " successfully connected!");
+        sendLog("Node: " + ip + " connected. ");
     }
 
     /**
