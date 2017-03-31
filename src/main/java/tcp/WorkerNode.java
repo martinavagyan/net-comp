@@ -27,7 +27,7 @@ public class WorkerNode extends TCPAbstractNode {
 
             if (obj instanceof NodeRequest) {
                 NodeRequest nr = (NodeRequest) obj;
-                rmiClient.logMessage("Received NodeRequest" + nr.getJobID());
+                rmiLogger.receivedNodeRequestLog(nr.getJobID() + "");
 
                 NodeAnswer na = new NodeAnswer(nr, tm.getDelay(), getNodeConnector());
                 AnswerHandler ah = new AnswerHandler(na);
@@ -39,7 +39,7 @@ public class WorkerNode extends TCPAbstractNode {
                 });
             } else if (obj instanceof NodeJob) {
                 NodeJob nj = (NodeJob) obj;
-                rmiClient.logMessage("Received NodeJob" + nj.getJobID());
+                rmiLogger.receivedNodeJobLog(nj.getJobID() + "");
                 if (nj.validate(getNodeConnector())) { // job is for us
                     tm.addNodeJob(nj); // post to webservice when finished
                 }

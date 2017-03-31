@@ -2,6 +2,7 @@ package tcp;
 
 
 import rmi.RmiClient;
+import rmi.RmiLogger;
 
 import java.io.IOException;
 import java.net.*;
@@ -11,15 +12,11 @@ import java.util.Enumeration;
 public abstract class TCPAbstractNode implements Runnable {
     protected ArrayList<NodeConnector> connectionList;
     protected ServerSocket ssocket;
-    protected RmiClient rmiClient;
+    protected RmiLogger rmiLogger;
 
     public TCPAbstractNode(int port,String rmiIp, int rmiPort ){
-        try {
-            rmiClient = new RmiClient(rmiIp ,rmiPort);
-            rmiClient.logMessage("Connected! just now");
-        }  catch (Exception e) {
-            e.printStackTrace();
-        }
+        rmiLogger = new RmiLogger(rmiIp ,rmiPort);
+        rmiLogger.testConnectionLog();
 
         try {
             String ip = null;

@@ -4,6 +4,7 @@ package tcp;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class AccessNode extends TCPAbstractNode {
@@ -29,12 +30,24 @@ public class AccessNode extends TCPAbstractNode {
                 NodeAnswer na = (NodeAnswer)obj;
                 Long jobID = na.getJobID();
                 TaskAssigner ta = taskTable.get(jobID);
-                if (ta != null) { ta.addNodeAnswer(na); }
+
+                //Log received Answer with local time
+                rmiLogger.receivedNodeAnswerLog(getNodeConnector().toString(), na);
+
+                if (ta != null) {
+                    ta.addNodeAnswer(na);
+                }
             } else if (obj instanceof NodeTask) {
                 NodeTask nt = (NodeTask)obj;
+
+                //Log received Task with local time
+                rmiLogger.receivedNodeTaskLog(getNodeConnector().toString());
+
                 addNewTask(nt.getSize(), nt.getJobID());
             }
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -47,13 +60,18 @@ public class AccessNode extends TCPAbstractNode {
 
     private void sendNodeRequest(NodeRequest nr) {
         for (NodeConnector nc : connectionList) {
+            //Log sending node request
+            rmiLogger.sendNodeRequestLog(getNodeConnector().toString());
+
             RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
             (new Thread(rh)).start();
         }
     }
 
     public synchronized void sendNodeJob(long jobID) {
-        System.out.println("Sending nodejob with id: "+ jobID);
+        //Log sending node job
+        rmiLogger.sendNodeJobLog(getNodeConnector().toString());
+
         TaskAssigner ta = taskTable.remove(jobID);
         NodeJob nj = new NodeJob(ta.getTask(), ta.getBestNodeAnswer(), jobID);
         JobHandler jh = new JobHandler(nj);

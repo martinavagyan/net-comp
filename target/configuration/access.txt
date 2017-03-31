@@ -1,6 +1,6 @@
 8801    # Port to connect this access node
 2       # Number of connections in its connection list
 1       # Number of worker nodes descendant from this access node
-192.168.178.16 1099          # Rmi Server ip and port
-192.168.178.16 8802 100      # Node connection (first item in connection list: ip, port and delay)
-192.168.178.16 8803 150      # Node connection (first item in connection list: ip, port and delay)
+145.97.157.86 1099          # Rmi Server ip and port
+145.97.157.86 8802 100      # Node connection (first item in connection list: ip, port and delay)
+145.97.157.86 8803 150      # Node connection (first item in connection list: ip, port and delay)

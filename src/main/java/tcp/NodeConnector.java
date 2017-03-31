@@ -41,4 +41,9 @@ public class NodeConnector implements Serializable{
     public int hashCode() {
         return Objects.hash(ip, port);
     }
+
+    @Override
+    public String toString() {
+        return "IP: " + ip + "| PORT: " + port;
+    }
 }
