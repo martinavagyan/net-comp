@@ -2,6 +2,7 @@ package tcp;
 
 import java.io.Serializable;
 
+/** Class used for representation of a packet that contains a task to be handled by the access node. */
 public class NodeTask extends AbstractNodePacket implements Serializable {
     private int size;
 

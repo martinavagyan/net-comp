@@ -4,6 +4,7 @@ package tcp;
 import java.io.Serializable;
 import java.util.Objects;
 
+/** Class used to store connection info to a node. */
 public class NodeConnector implements Serializable{
     private String ip;
     private Integer port;

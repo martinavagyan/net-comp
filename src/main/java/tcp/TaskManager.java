@@ -3,8 +3,6 @@ package tcp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import jdk.nashorn.internal.codegen.CompilerConstants;
 import mq.CallBack;
 import mq.MessageQueue;
 import org.apache.http.HttpEntity;
@@ -16,15 +14,17 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
+/** Class that handles the execution of NodeJobs and updates the web service upon task completion. */
 public class TaskManager implements Runnable, CallBack {
     private MessageQueue mq;
     private NodeConnector nc; // own node connector, used for identification when logging
     private String host;
+    private static final long SYSTEM_DELAY_CONSTANT = 100;
 
     public TaskManager (NodeConnector nc, String host) {
         this.host = host;
         this.nc = nc;
-        mq = new MessageQueue(); // hard-coded capacity
+        mq = new MessageQueue();
     }
 
     public synchronized boolean addNodeJob(NodeJob nj) {
@@ -39,6 +39,7 @@ public class TaskManager implements Runnable, CallBack {
     public void runTask(NodeJob nj) {
         System.out.println("Running task with ID: " + nj.getJobID());
         nj.getTask().execute();
+
         // update webservice that job is done
         System.out.println("Finished job with ID: " + nj.getJobID());
 
@@ -53,15 +54,13 @@ public class TaskManager implements Runnable, CallBack {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String result = entity.getContent().toString();
-                //System.out.println(result);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //TODO
     public long getDelay() {
-        return mq.size()*100;
+        return mq.size()*SYSTEM_DELAY_CONSTANT;
     }
 }

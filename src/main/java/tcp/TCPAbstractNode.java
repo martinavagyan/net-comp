@@ -1,7 +1,6 @@
 package tcp;
 
 
-import rmi.RmiClient;
 import rmi.RmiLogger;
 
 import java.io.IOException;
