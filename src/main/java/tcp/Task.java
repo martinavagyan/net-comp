@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
-
+/** Class used for representation of a task that is executed within the data center. */
 public class Task implements Serializable{
     private int size;
     private ArrayList<Integer> contentList;

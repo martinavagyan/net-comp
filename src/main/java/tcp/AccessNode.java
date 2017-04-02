@@ -4,9 +4,9 @@ package tcp;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 
+/** Class used for the access nodes to the data center. */
 public class AccessNode extends TCPAbstractNode {
     private HashMap<Long, TaskAssigner> taskTable;
     private final int numWorkerNodes;

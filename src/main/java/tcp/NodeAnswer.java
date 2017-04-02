@@ -2,6 +2,7 @@ package tcp;
 
 import java.io.Serializable;
 
+/** Class used for representation of a packet that contains the answer from a worker node. */
 public class NodeAnswer extends AbstractNodePacket implements Serializable, Comparable<NodeAnswer> {
     private long delay;
 

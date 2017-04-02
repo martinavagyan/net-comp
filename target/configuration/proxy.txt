@@ -1,2 +1,2 @@
 1
-192.168.178.16 8801 100      # Access Node connection (first item in connection list: ip, port and delay:unused)
+145.97.150.8 8801 100      # Access Node connection (first item in connection list: ip, port and delay:unused)

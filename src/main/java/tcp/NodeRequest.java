@@ -3,7 +3,7 @@ package tcp;
 import java.io.Serializable;
 import java.util.Stack;
 
-
+/** Class used for representation of a packet that contains the request of availability for a worker node. */
 public class NodeRequest extends AbstractNodePacket implements Serializable{
     private long delay;
     private Stack<NodeConnector> traceStack; // path it creates

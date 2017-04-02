@@ -4,6 +4,7 @@ package tcp;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+/** Class used to store a connection list towards multiple access nodes. */
 public class ProxyNode {
     private ArrayList<NodeConnector> connectionList;
 

@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+/** Class used for handling the actual sending of an object via socket connection. */
 public class SocketSender {
 
     public static void send(NodeConnector nc, Object obj) {
