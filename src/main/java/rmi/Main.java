@@ -4,6 +4,7 @@ import java.net.InetAddress;
 
 /**
  * Created by Martin on 3/23/2017.
+ * RMI Server Program
  */
 public class Main {
     public static void main(String[] args) {
@@ -13,10 +14,6 @@ public class Main {
 
             RmiServer server = new RmiServer();
             server.startServer();
-
-            /*RmiClient client = new RmiClient(serverIP,1099);
-            System.out.println("Client connected to IP: " + serverIP);
-            client.logMessage("Connected! just now");*/
         } catch (Exception e){ e.printStackTrace();}
     }
 }

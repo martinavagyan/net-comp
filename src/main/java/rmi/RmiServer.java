@@ -1,13 +1,10 @@
 package rmi;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
+import util.Util;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
-import java.util.Enumeration;
 
 public class RmiServer {
 
@@ -20,7 +17,7 @@ public class RmiServer {
 
     public RmiServer() throws RemoteException {
         try {
-            ip = InetAddress.getByName(getProperIp());
+            ip = InetAddress.getByName(new Util().getProperIp());
             host = ip.getHostName();
             System.out.println("Server IP address : " + ip);
             System.out.println("Server Hostname : " + host);
@@ -49,12 +46,8 @@ public class RmiServer {
          /**
          * instance of rmi server object
          * */
-
         System.setProperty("java.rmi.server.hostname", ip.getHostAddress());
         System.setSecurityManager(new SecurityManager());
-
-        //if (System.getSecurityManager() == null)
-          //  System.setSecurityManager(new RMISecurityManager());
 
         serverObj = new RmiServerObjectImplementation();
         System.setProperty("java.security.policy", "client.policy");
@@ -65,28 +58,5 @@ public class RmiServer {
         Naming.rebind(rmiObjectName, serverObj);
 
         System.out.println("Server binding complete...\n");
-    }
-
-    String getProperIp() {
-        String ip = null;
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface iface = interfaces.nextElement();
-                if (iface.isLoopback() || !iface.isUp() || iface.isVirtual() || iface.isPointToPoint())
-                    continue;
-
-                Enumeration<InetAddress> addresses = iface.getInetAddresses();
-                while (addresses.hasMoreElements()) {
-                    InetAddress addr = addresses.nextElement();
-
-                    final String theIp = addr.getHostAddress();
-                    if (Inet4Address.class == addr.getClass()) ip = theIp;
-                }
-            }
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-        return ip;
     }
 }
