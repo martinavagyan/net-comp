@@ -8,14 +8,20 @@ import static spark.Spark.*;
 
 public class REST {
 
-    private ProxyNode proxyNode;
-    private int id_counter = 0;
-    private ArrayList jobs;
+    /**
+        A REST api for the distributed system
+        Requests and Responses are in the JSON format
+     */
+
+    private ProxyNode proxyNode;    // The distributor node
+    private int id_counter = 0;     // The job id counter
+    private ArrayList jobs;         // List of jobs with their status
 
     public REST() {
         jobs = new ArrayList();
 
         post("api/sort_list", (req, res) -> {
+            // Create a new task to sort a list
             JSONObject obj = new JSONObject();
             if (proxyNode == null) {
                 return setError(1, "There is no proxyNode connected to this API");
@@ -28,6 +34,7 @@ public class REST {
             } catch (NumberFormatException nfe) {
                 return setError(2, "Parameter 'size' should be an integer");
             }
+            // Send the task to the proxyNode to distribute it
             proxyNode.addNewTask(list_size, id_counter);
             jobs.add(id_counter, "In progress");
             obj.put("job_id", id_counter);
@@ -39,6 +46,7 @@ public class REST {
         });
 
         get("api/status/check/:job_id", (req, res) -> {
+            // Lookup and return the status of a job
             JSONObject obj = new JSONObject();
             if (proxyNode == null) {
                 return setError(1, "There is no proxyNode connected to this API");
@@ -62,6 +70,7 @@ public class REST {
         });
 
         post("api/status/update/:job_id", (req, res) -> {
+            // Update the status of a job (done by a WorkerNode)
             JSONObject obj = new JSONObject();
             if (proxyNode == null) {
                 return setError(1, "There is no proxyNode connected to this API");
@@ -88,6 +97,7 @@ public class REST {
     }
 
     public JSONObject setError(int code, String message) {
+        // return an error message
         JSONObject obj = new JSONObject();
         obj.put("error", code);
         obj.put("message", message);

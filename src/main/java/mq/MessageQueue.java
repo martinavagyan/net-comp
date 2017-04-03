@@ -8,7 +8,6 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP;
 import java.io.*;
-import javax.security.auth.callback.Callback;
 import tcp.NodeJob;
 
 /**
@@ -17,29 +16,27 @@ import tcp.NodeJob;
 public class MessageQueue {
 
     private final static String QUEUE_NAME = "netcomp";
-    private final static Boolean DURABLE = false;
-
-    private Channel channel;
-
-    public MessageQueue() {
-
-    }
+    private final static String HOST = "localhost";
 
     public boolean offer(NodeJob nj) {
         try {
             ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("localhost");
+            factory.setHost(HOST);
 
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
-            channel.queueDeclare(QUEUE_NAME, DURABLE, false, false, null);
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutput out = null;
             try {
+                // convert NodeJob to byte array
                 out = new ObjectOutputStream(bos);
                 out.writeObject(nj);
                 out.flush();
                 byte[] bytes = bos.toByteArray();
+
+                // publish task
                 channel.basicPublish("", QUEUE_NAME, null, bytes);
                 System.out.println(" [x] Sent Job '" + nj.getJobID() + "'");
             } finally {
@@ -53,6 +50,8 @@ public class MessageQueue {
             connection.close();
             return true;
         } catch (Exception e) {
+            // An error has occured during the message queue definition
+            e.printStackTrace();
             return false;
         }
     }
@@ -60,13 +59,13 @@ public class MessageQueue {
     public void listen(CallBack cb) {
         try {
             ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("localhost");
+            factory.setHost(HOST);
 
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
-            System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
+            System.out.println(" [*] Waiting for queue messages.");
 
             Consumer consumer = new DefaultConsumer(channel) {
                 @Override
@@ -81,9 +80,11 @@ public class MessageQueue {
                     ObjectInput in = null;
                     NodeJob nj = null;
                     try {
-                      in = new ObjectInputStream(bis);
-                      nj = (NodeJob) in.readObject();
+                        // read byte array in a NodeJob instance
+                        in = new ObjectInputStream(bis);
+                        nj = (NodeJob) in.readObject();
                     } catch (ClassNotFoundException e) {
+                        // Class NodeJob is not found
                         e.printStackTrace();
                     } finally {
                       try {
@@ -96,26 +97,33 @@ public class MessageQueue {
                     }
                     if (nj != null) {
                         System.out.println(" [x] Received Job '" + nj.getJobID() + "'");
+                        // make callback to the TaskManager
                         cb.runTask(nj);
+                        // acknowledge the task
                         channel.basicAck(envelope.getDeliveryTag(), false);
                     }
 
                 }
             };
+            // Only remove a task from the queue if it is completed without errors
             boolean autoAck = false;
+            // Listen for incoming tasks
             channel.basicConsume(QUEUE_NAME, autoAck, consumer);
         } catch (Exception e) {
+            // An error has occured during initialiaztion of the message queue
+            // or while reading a message
             e.printStackTrace();
         }
     }
 
     public int size() {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost(HOST);
 
         try {
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
+            // Get queue length estimate
             AMQP.Queue.DeclareOk dok = channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             return dok.getMessageCount();
         } catch (Exception e) {
