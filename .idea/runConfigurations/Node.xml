@@ -5,8 +5,8 @@
     <option name="VM_PARAMETERS" value="-Djava.rmi.server.codebase=file:..\..\src\main\java\rmi -Djava.security.policy=file:client.policy" />
     <option name="PROGRAM_PARAMETERS" value="proxy.txt" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/target/configuration" />
-    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="/usr/lib/jvm/java-1.8.0-openjdk-amd64" />
     <option name="ENABLE_SWING_INSPECTOR" value="false" />
     <option name="ENV_VARIABLES" />
     <option name="PASS_PARENT_ENVS" value="true" />
