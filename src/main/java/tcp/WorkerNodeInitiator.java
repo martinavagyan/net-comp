@@ -14,14 +14,15 @@ public class WorkerNodeInitiator {
     public static WorkerNode initWorkerNode(String filename) throws IOException {
         BufferedReader in = new BufferedReader(new FileReader(filename));
 
-        int port = Integer.parseInt(in.readLine());
-        int numConnections = Integer.parseInt(in.readLine());
-        String webHost = in.readLine();
+        String[] portLine = in.readLine().split(" ");
+        int port = Integer.parseInt(portLine[0]);
 
-        String rmiline = in.readLine();
-        String[] rmiSpec = rmiline.split(" ");
+        String[] numConnectLine = in.readLine().split(" ");
+        int numConnections = Integer.parseInt(numConnectLine[0]);
 
-        WorkerNode workerNode = new WorkerNode(port, webHost, rmiSpec[0], Integer.parseInt(rmiSpec[1]));
+        String[] webHostLine = in.readLine().split(" ");
+        String[] rmiLine = in.readLine().split(" ");
+        WorkerNode workerNode = new WorkerNode(port, webHostLine[0], rmiLine[0], Integer.parseInt(rmiLine[1]));
 
         for (int i=0; i < numConnections; ++i) {
             String line = in.readLine();

@@ -3,6 +3,7 @@ package tcp;
 
 import java.io.Serializable;
 
+/** Class that represents the model of packets to be sent via sockets. */
 public abstract class AbstractNodePacket implements Serializable {
     private long jobID;
     private NodeConnector origin;

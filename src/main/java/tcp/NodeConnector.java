@@ -4,6 +4,7 @@ package tcp;
 import java.io.Serializable;
 import java.util.Objects;
 
+/** Class used to store connection info to a node. */
 public class NodeConnector implements Serializable{
     private String ip;
     private Integer port;
@@ -40,5 +41,10 @@ public class NodeConnector implements Serializable{
     @Override
     public int hashCode() {
         return Objects.hash(ip, port);
+    }
+
+    @Override
+    public String toString() {
+        return "IP: " + ip + " | PORT: " + port;
     }
 }

@@ -2,13 +2,13 @@ package web;
 
 import java.util.ArrayList;
 import org.json.simple.JSONObject;
-import tcp.AccessNode;
+import tcp.ProxyNode;
 
 import static spark.Spark.*;
 
 public class REST {
 
-    private AccessNode accessNode;
+    private ProxyNode proxyNode;
     private int id_counter = 0;
     private ArrayList jobs;
 
@@ -17,8 +17,8 @@ public class REST {
 
         post("api/sort_list", (req, res) -> {
             JSONObject obj = new JSONObject();
-            if (accessNode == null) {
-                return setError(1, "There is no accessNode connected to this API");
+            if (proxyNode == null) {
+                return setError(1, "There is no proxyNode connected to this API");
             }
 
             String str_list_size = req.queryParams("size");
@@ -28,7 +28,7 @@ public class REST {
             } catch (NumberFormatException nfe) {
                 return setError(2, "Parameter 'size' should be an integer");
             }
-            accessNode.addNewTask(list_size, id_counter);
+            proxyNode.addNewTask(list_size, id_counter);
             jobs.add(id_counter, "In progress");
             obj.put("job_id", id_counter);
             obj.put("job_task", "sort_list");
@@ -40,8 +40,8 @@ public class REST {
 
         get("api/status/check/:job_id", (req, res) -> {
             JSONObject obj = new JSONObject();
-            if (accessNode == null) {
-                return setError(1, "There is no accessNode connected to this API");
+            if (proxyNode == null) {
+                return setError(1, "There is no proxyNode connected to this API");
             }
 
             int job_id = 0;
@@ -63,8 +63,8 @@ public class REST {
 
         post("api/status/update/:job_id", (req, res) -> {
             JSONObject obj = new JSONObject();
-            if (accessNode == null) {
-                return setError(1, "There is no accessNode connected to this API");
+            if (proxyNode == null) {
+                return setError(1, "There is no proxyNode connected to this API");
             }
 
             int job_id = 0;
@@ -94,9 +94,9 @@ public class REST {
         return obj;
     }
 
-    public void setAccessNode(AccessNode node)
+    public void setProxyNode(ProxyNode node)
     {
-        this.accessNode = node;
+        this.proxyNode = node;
     }
 }
 

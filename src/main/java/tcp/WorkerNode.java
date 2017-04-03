@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 
+/** Class used for the worker nodes in the data center. */
 public class WorkerNode extends TCPAbstractNode {
     private TaskManager tm;
 
@@ -27,21 +28,22 @@ public class WorkerNode extends TCPAbstractNode {
 
             if (obj instanceof NodeRequest) {
                 NodeRequest nr = (NodeRequest) obj;
-                rmiClient.logMessage("Received NodeRequest" + nr.getJobID());
+                rmiLogger.receivedNodeRequestLog(getNodeConnector().toString(),nr.getJobID() + "");
 
                 NodeAnswer na = new NodeAnswer(nr, tm.getDelay(), getNodeConnector());
                 AnswerHandler ah = new AnswerHandler(na);
-                (new Thread(ah)).start(); // send back the node answer to request (i.e. the delay)
+                (new Thread(ah)).start();
 
                 connectionList.stream().filter(nc -> !nr.getTraceStack().contains(nc)).forEach(nc -> {
                     RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
+                    rmiLogger.sendNodeRequestLog(getNodeConnector().toString(),nr.getJobID()+"",nc.toString());
                     (new Thread(rh)).start();
                 });
             } else if (obj instanceof NodeJob) {
                 NodeJob nj = (NodeJob) obj;
-                rmiClient.logMessage("Received NodeJob" + nj.getJobID());
-                if (nj.validate(getNodeConnector())) { // job is for us
-                    tm.addNodeJob(nj); // post to webservice when finished
+                rmiLogger.receivedNodeJobLog(getNodeConnector().toString(),nj.getJobID() + "");
+                if (nj.validate(getNodeConnector())) {
+                    tm.addNodeJob(nj);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

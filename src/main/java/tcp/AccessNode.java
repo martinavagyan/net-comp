@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
+/** Class used for the access nodes to the data center. */
 public class AccessNode extends TCPAbstractNode {
     private HashMap<Long, TaskAssigner> taskTable;
     private final int numWorkerNodes;
@@ -29,14 +30,29 @@ public class AccessNode extends TCPAbstractNode {
                 NodeAnswer na = (NodeAnswer)obj;
                 Long jobID = na.getJobID();
                 TaskAssigner ta = taskTable.get(jobID);
-                if (ta != null) { ta.addNodeAnswer(na); }
+
+                //Log received Answer with local time
+                rmiLogger.receivedNodeAnswerLog(getNodeConnector().toString(), na);
+
+                if (ta != null) {
+                    ta.addNodeAnswer(na);
+                }
+            } else if (obj instanceof NodeTask) {
+                NodeTask nt = (NodeTask)obj;
+
+                //Log received Task with local time
+                rmiLogger.receivedNodeTaskLog(getNodeConnector().toString(),nt.getJobID()+"");
+
+                addNewTask(nt.getSize(), nt.getJobID());
             }
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public synchronized void addNewTask(int size, long jobID) {
+    private synchronized void addNewTask(int size, long jobID) {
         TaskAssigner ta = new TaskAssigner(new Task(size), jobID, this);
         taskTable.put(jobID, ta);
         sendNodeRequest(new NodeRequest(jobID, getNodeConnector()));
@@ -44,16 +60,23 @@ public class AccessNode extends TCPAbstractNode {
 
     private void sendNodeRequest(NodeRequest nr) {
         for (NodeConnector nc : connectionList) {
+            //Log sending node request
+            rmiLogger.sendNodeRequestLog(getNodeConnector().toString(), nr.getJobID() +"", nc.toString());
+
             RequestHandler rh = new RequestHandler(getNodeConnector(), nc, nr);
             (new Thread(rh)).start();
         }
     }
 
     public synchronized void sendNodeJob(long jobID) {
-        System.out.println("Sending nodejob with id: "+ jobID);
+
         TaskAssigner ta = taskTable.remove(jobID);
         NodeJob nj = new NodeJob(ta.getTask(), ta.getBestNodeAnswer(), jobID);
         JobHandler jh = new JobHandler(nj);
+
+        //Log sending node job
+        rmiLogger.sendNodeJobLog(getNodeConnector().toString(),jobID+"",nj.getDestination().toString());
+
         (new Thread(jh)).start();
     }
 

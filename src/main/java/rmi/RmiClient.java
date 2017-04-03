@@ -1,12 +1,7 @@
 package rmi;
-
-import rmi.RmiServerObjectInterface;
-
 import java.net.MalformedURLException;
 import java.rmi.ConnectException;
 import java.rmi.Naming;
-import java.net.UnknownHostException;
-import java.net.InetAddress;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
@@ -36,6 +31,9 @@ public class RmiClient {
         obj.logMessage(msg);
     }
 
+    /**
+     * Set connection to server
+     * */
     private RmiServerObjectInterface connectToServer(){
         try{
             RmiServerObjectInterface obj = (RmiServerObjectInterface)Naming.lookup(rmiObjectName);
