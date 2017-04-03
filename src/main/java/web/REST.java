@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import org.json.simple.JSONObject;
 import tcp.ProxyNode;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 public class REST {
 
