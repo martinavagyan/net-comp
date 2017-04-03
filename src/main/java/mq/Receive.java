@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public class Receive {
     private final static String QUEUE_NAME = "netcomp";
-    private final static Boolean DURABLE = false;
+    private final static Boolean DURABLE = true;
 
     public Receive() {
         try {

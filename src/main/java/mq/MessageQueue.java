@@ -64,7 +64,7 @@ public class MessageQueue {
 
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
-            channel.queueDeclare(QUEUE_NAME, DURABLE, false, false, null);
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
             System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
@@ -97,11 +97,13 @@ public class MessageQueue {
                     if (nj != null) {
                         System.out.println(" [x] Received Job '" + nj.getJobID() + "'");
                         cb.runTask(nj);
+                        channel.basicAck(envelope.getDeliveryTag(), false);
                     }
 
                 }
             };
-            channel.basicConsume(QUEUE_NAME, true, consumer);
+            boolean autoAck = false;
+            channel.basicConsume(QUEUE_NAME, autoAck, consumer);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,7 +116,7 @@ public class MessageQueue {
         try {
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
-            AMQP.Queue.DeclareOk dok = channel.queueDeclare(QUEUE_NAME, DURABLE, false, false, null);
+            AMQP.Queue.DeclareOk dok = channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             return dok.getMessageCount();
         } catch (Exception e) {
             e.printStackTrace();

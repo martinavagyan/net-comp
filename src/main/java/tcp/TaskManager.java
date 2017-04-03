@@ -37,6 +37,7 @@ public class TaskManager implements Runnable, CallBack {
     }
 
     public void runTask(NodeJob nj) {
+        //System.exit(0);
         System.out.println("Running task with ID: " + nj.getJobID());
         nj.getTask().execute();
         // update webservice that job is done
